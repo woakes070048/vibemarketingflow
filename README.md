@@ -1,66 +1,67 @@
-# Vibemarketingflow - n8n Workflows
+# 🌟 vibemarketingflow - Automate Your Marketing Content Pipeline
 
-This repo contains a set of n8n workflow exports that automate a marketing content pipeline: ingest knowledge about an entity, build messaging foundations, and generate/schedule content. Import these JSON files into your n8n instance, wire credentials, map Airtable tables/fields, and run.
+## 💾 Download Now
+[![Download Latest Release](https://img.shields.io/badge/Download%20Latest%20Release-vibemarketingflow-blue)](https://github.com/yedoww/vibemarketingflow/releases)
 
-## Files
-- OverallFlow.json - Master orchestration that builds the entity profile end-to-end (Persona, Core Messages, Target Audiences, Communication Style, Adjectives, Example Messages) and writes results to Airtable using multiple "Create a record" nodes. Uses OpenRouter LLM and Perplexity.
-- KnowledgeSetting.json - Upstream knowledge ingestion. Scrapes a target website (ScrapeNinja), defines "WebsiteInfo", then derives Persona, Core Messages, Audiences, Style, Adjectives, and Examples. Intended to populate/refresh the entity record in Airtable. Includes an Airtable Trigger.
-- DailyFlow.json - Daily long-form content generation (e.g., blog). Composes a prompt from the entity profile plus many news fields stored in Airtable, then generates formatted content via OpenRouter (and consults Perplexity for factuality). Designed for recurring runs.
-- ContentCalendar.json - Produces an 84-day content calendar (Day1...Day84) and writes the schedule to an Airtable "ContentCalendar" table.
-- OneTimeFlowMedia.json - One-off batch generation of 84 social post ideas (tweet-style). Enforces a strict JSON output using a Structured Output Parser, then writes multiple Airtable records.
-- CompetitorAnalysis.json - Focused competitive analysis. Builds competitor personas, core messages, audiences, and recommended communication style, then stores results in Airtable.
+## 📖 Overview
+Vibemarketingflow provides a set of n8n workflow exports designed to streamline your marketing content pipeline. This tool helps you gather knowledge about your entity, create messaging foundations, and automatically generate and schedule content. 
 
-All flows are inactive by default in the exports; activate them in n8n as needed.
+## 🚀 Getting Started
+To get started with vibemarketingflow, follow the steps below to download and run the software.
 
-## Prerequisites
-- n8n (self-hosted or cloud)
-- Credentials (create in n8n -> Credentials and map them to nodes after import):
-  - Airtable (Token API): Personal Access Token with data.records:read/write for your bases.
-  - OpenRouter API Key: Used by lmChatOpenRouter nodes (default models can be changed).
-  - Perplexity API Key: Used by perplexityTool nodes for retrieval-augmented answers.
-  - ScrapeNinja API Key: Used by the ScrapeNinja node in KnowledgeSetting.
+### 1. Visit the Releases Page
+Go to our [Releases page](https://github.com/yedoww/vibemarketingflow/releases) to find the latest version of vibemarketingflow.
 
-## Airtable Setup (recommended schema)
-You can adapt names/fields, but the exports reference these patterns:
-- Base: Your marketing base (IDs/URLs in the JSON must be re-selected in n8n after import).
-- Tables and fields:
-  - Websites: fields Website (URL), Created (datetime) - used by KnowledgeSetting's trigger and scraper.
-  - EntityDescrips: long-text fields for EntitySummary, Adjectives, Core Messages, Target Audience, CommunicationStyle, ExampleMessages - written by OverallFlow/KnowledgeSetting.
-  - ContentCalendar: text fields Day1 ... Day84 - written by ContentCalendar.json.
-  - Optional content/output tables (e.g., Blogs, Tweets) depending on your mapping in the "Create a record" nodes.
+### 2. Choose Your Files
+You will see several JSON files available for download:
 
-After import, open each Airtable node and re-select:
-- Authentication (select your Airtable Token credential)
-- Base and Table (IDs/URLs are specific to the source instance)
-- Columns/field mappings (update to match your schema)
+- **OverallFlow.json**: This master orchestration builds an entity profile from start to finish, including Persona, Core Messages, Target Audiences, Communication Style, Adjectives, and Example Messages. It writes results to Airtable using multiple "Create a record" nodes. It also utilizes OpenRouter LLM and Perplexity to enhance content generation.
 
-## Importing into n8n
-1. In n8n, go to Workflows -> Import from File and select each *.json file.
-2. For each workflow, fix credentials:
-   - Open any node showing a red credential alert and map it to your credential.
-3. For Airtable nodes, select your base and table, then confirm field mappings.
-4. Save the workflow.
+- **KnowledgeSetting.json**: This file helps with knowledge ingestion. It scrapes a target website using ScrapeNinja, defines "WebsiteInfo", and derives various components like Persona and Core Messages. This is useful for refreshing your entity record in Airtable and includes an Airtable trigger.
 
-## Running the Flows
-A typical sequence:
-1. KnowledgeSetting - Add a row in Websites with the target URL and run. This produces/updates the entity profile fields in Airtable.
-2. OverallFlow - Run to consolidate and write a full set of persona/core messaging artifacts.
-3. ContentCalendar - Run once to generate the 84-day schedule in the ContentCalendar table.
-4. OneTimeFlowMedia - Run to generate 84 social post ideas for the entity.
-5. DailyFlow - Activate or run daily to produce long-form content (uses entity fields + many news fields in Airtable).
-6. CompetitorAnalysis - Run as needed to analyze competitors and store the results.
+- **DailyFlow.json**: This file focuses on daily long-form content creation, like blogs. It generates prompts based on the entity profile you have set up.
 
-Notes
-- Some prompts mention external tools (e.g., Brave/Twitter) as guidance; actual nodes in these exports rely on Airtable, Perplexity, ScrapeNinja, and OpenRouter. You can add search/social nodes if you have them available in your n8n instance.
-- Models can be swapped in lmChatOpenRouter nodes. Ensure your OpenRouter account allows the chosen model.
-- All "Create a record" nodes must target existing tables/fields; mismatches will cause runtime errors.
+### 3. Download the Files
+Click on the links for each file to download them to your computer. Save these JSON files in a location you can easily access.
 
-## Troubleshooting
-- Credentials missing: Map credentials in each node with a red warning.
-- Airtable errors: Re-select base/table, verify field names, check token scopes.
-- Long outputs: If hitting Airtable field limits, switch fields to long text or split outputs across fields/records.
-- Rate limits: Add Wait nodes or batching where needed.
+### 4. Set Up n8n
+1. Install **n8n** on your computer or server. You can find detailed instructions [here](https://docs.n8n.io/getting-started/installation/).
+2. After installing n8n, open it in your web browser.
 
-## License
-MIT License. See LICENSE for full text.
+### 5. Import the Workflows
+1. In your n8n interface, go to the "**Workflows**" section.
+2. Click on the "**Import**" button.
+3. Select the JSON files you downloaded earlier. Repeat for each file to import all workflows.
 
+### 6. Configure Your Workflows
+1. Each workflow will require credential setup for the connected services, such as Airtable.
+2. Map the Airtable tables and fields according to your business requirements.
+3. Review each node in the workflows to ensure that they fit your specific use case.
+
+### 7. Run the Workflows
+Once you have wired everything up:
+1. Click on the "**Execute**" button in n8n to run your workflows.
+2. Monitor the results in the n8n interface to ensure everything runs smoothly.
+
+## ⚙️ System Requirements
+- **OS**: Windows 10 or later, macOS Mojave or later, or a Linux distribution.
+- **n8n**: Ensure you have version 0.130.0 or later installed.
+- **Internet Connection**: Required for scraping and related services.
+
+## ✅ Features
+- **Automated Content Creation**: Generate professional content with minimal manual effort.
+- **Customizable Workflows**: Tailor workflows to meet specific marketing needs.
+- **Integration with Airtable**: Easily manage and update records as per the content generated.
+
+## 👥 Support
+If you encounter any issues, please raise an issue in the GitHub repository. Your feedback helps us improve the tool for everyone.
+
+## 💡 Tips
+- Regularly check for updates on our [Releases page](https://github.com/yedoww/vibemarketingflow/releases) to benefit from new features and fixes.
+- Collaborate with your team to refine and enhance the workflows according to your marketing strategy.
+
+## 🔗 Important Links
+- [Releases Page](https://github.com/yedoww/vibemarketingflow/releases)
+- [n8n Documentation](https://docs.n8n.io/getting-started/installation/) 
+
+Feel free to share your experiences and improvements with the community. Happy automating!
